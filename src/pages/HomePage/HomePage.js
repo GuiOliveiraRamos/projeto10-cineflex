@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const [filmes, setFilmes] = useState([]);
@@ -11,54 +12,28 @@ export default function HomePage() {
     );
 
     request.then((resposta) => {
-        console.log(resposta.data)
+      console.log(resposta.data);
       setFilmes(resposta.data);
     });
   }, []);
+
   if (filmes.length === 0) {
     return <p>Carregando...</p>;
   }
+
   return (
     <PageContainer>
       Selecione o filme
       <ListContainer>
-        <MovieContainer>
+        <Link to="/sessoes/:idSessao">
           {filmes.map((filme) => (
-            <div key={filme.id}>
-              <img src={filme.posterURL} alt={filme.title} />
-              <p>{filme.title}</p>
-              <p>{filme.overview}</p>
-              <p>Release date: {filme.releaseDate}</p>
-            </div>
+            <MovieContainer>
+              <div key={filme.id}>
+                <img src={filme.posterURL} alt={filme.title} />
+              </div>
+            </MovieContainer>
           ))}
-        </MovieContainer>
-
-        <MovieContainer>
-          <img
-            src={
-              "https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"
-            }
-            alt="poster"
-          />
-        </MovieContainer>
-
-        <MovieContainer>
-          <img
-            src={
-              "https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"
-            }
-            alt="poster"
-          />
-        </MovieContainer>
-
-        <MovieContainer>
-          <img
-            src={
-              "https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"
-            }
-            alt="poster"
-          />
-        </MovieContainer>
+        </Link>
       </ListContainer>
     </PageContainer>
   );
