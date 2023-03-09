@@ -69,7 +69,7 @@ const PageContainer = styled.div`
   padding-bottom: 120px;
   padding-top: 70px;
   div {
-    margin-top: 20px;
+    margin-top: 5px;
   }
 `;
 const SessionContainer = styled.div`
@@ -85,6 +85,7 @@ const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin: 20px 0;
+  padding-top: 10px;
   button {
     margin-right: 20px;
   }
