@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function SessionsPage() {
   const [sessoes, setSessoes] = useState([]);
+  const { idSessao } = useParams();
 
   useEffect(() => {
-    const request = axios.get(
-      "https://mock-api.driven.com.br/api/v8/cineflex/movies/2/showtimes"
-    );
+    const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idSessao}/showtimes`;
+    const request = axios.get(url);
 
     request.then((resposta) => {
       console.log(resposta.data);
@@ -23,17 +23,21 @@ export default function SessionsPage() {
   return (
     <PageContainer>
       Selecione o horário
-      {sessoes.days.map((dia) => (
-        <div key={dia.id}>
+      {sessoes.days.map((d) => (
+        <div key={d.id}>
           <SessionContainer>
-            {dia.weekday} - {dia.date}
-            <Link to="/assentos/:idAssento">
-              <ButtonsContainer>
-                {dia.showtimes.map((horario) => (
-                  <button key={horario.id}>{horario.name}</button>
-                ))}
-              </ButtonsContainer>
-            </Link>
+            <div data-test="movie-day">
+              {d.weekday} - {d.date}
+            </div>
+            <ButtonsContainer>
+              {d.showtimes.map((h) => (
+                <Link to={`/assentos/${h.id}`}>
+                  <button data-test="showtime" key={h.id}>
+                    {h.name}
+                  </button>
+                </Link>
+              ))}
+            </ButtonsContainer>
           </SessionContainer>
         </div>
       ))}

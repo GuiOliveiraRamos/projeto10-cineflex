@@ -25,15 +25,15 @@ export default function HomePage() {
     <PageContainer>
       Selecione o filme
       <ListContainer>
-        <Link to="/sessoes/:idSessao">
-          {filmes.map((filme) => (
+        {filmes.map((filme) => (
+          <Link to={`/sessoes/${filme.id}`}>
             <MovieContainer>
-              <div key={filme.id}>
+              <div data-test="movie" key={filme.id}>
                 <img src={filme.posterURL} alt={filme.title} />
               </div>
             </MovieContainer>
-          ))}
-        </Link>
+          </Link>
+        ))}
       </ListContainer>
     </PageContainer>
   );

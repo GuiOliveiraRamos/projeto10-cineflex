@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function SeatsPage() {
+  const { idAssentos } = useParams();
   const [assentos, setAssentos] = useState([]);
 
   useEffect(() => {
-    const request = axios.get(
-      "https://mock-api.driven.com.br/api/v8/cineflex/showtimes/1/seats"
-    );
+    const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idAssentos}/seats`;
+    const request = axios.get(url);
 
     request.then((resposta) => {
       console.log(resposta.data);
       setAssentos(resposta.data);
     });
-  }, []);
+  }, [idAssentos]);
 
   if (assentos.length === 0) {
     return <p>Carregando...</p>;
@@ -25,11 +25,11 @@ export default function SeatsPage() {
     <PageContainer>
       Selecione o(s) assento(s)
       <SeatsContainer>
-        <SeatItem>01</SeatItem>
-        <SeatItem>02</SeatItem>
-        <SeatItem>03</SeatItem>
-        <SeatItem>04</SeatItem>
-        <SeatItem>05</SeatItem>
+        {assentos.seats.map((a) => (
+          <SeatItem key={a.id}>
+            <div data-test="seat">{a.name}</div>
+          </SeatItem>
+        ))}
       </SeatsContainer>
       <CaptionContainer>
         <CaptionItem>
@@ -47,15 +47,15 @@ export default function SeatsPage() {
       </CaptionContainer>
       <FormContainer>
         Nome do Comprador:
-        <input placeholder="Digite seu nome..." />
+        <input data-test="client-name" placeholder="Digite seu nome..." />
         CPF do Comprador:
-        <input placeholder="Digite seu CPF..." />
-        <Link to="/sessoes/:idFilme">
-          <button>Reservar Assento(s)</button>
+        <input data-test="client-cpf" placeholder="Digite seu CPF..." />
+        <Link to="/sessoes/sucesso">
+          <button data-test="book-seat-btn">Reservar Assento(s)</button>
         </Link>
       </FormContainer>
       <FooterContainer>
-        <div>
+        <div data-test="footer">
           <img
             src={
               "https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"
