@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 export default function SeatsPage() {
   const { idAssentos } = useParams();
   const [assentos, setAssentos] = useState([]);
+  const [assentosSelecionados, setAssentosSelecionados] = useState([]);
+  const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
+
+  const selecionarAssento = (assento) => {
+    if (assento.isAvailable) {
+      setAssentosSelecionados([...assentosSelecionados, assento.id]);
+    } else {
+      alert("Assento já reservado");
+    }
+  };
 
   useEffect(() => {
     const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idAssentos}/seats`;
@@ -21,23 +32,39 @@ export default function SeatsPage() {
     return <p>Carregando...</p>;
   }
 
+  function reservarAssentos(e) {
+    e.preventDefault();
+    const ids = assentosSelecionados;
+    const request = axios.post(
+      "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many",
+      { ids, name, cpf }
+    );
+    request.then(() => Navigate("/sucesso"));
+  }
+
   return (
     <PageContainer>
       Selecione o(s) assento(s)
       <SeatsContainer>
         {assentos.seats.map((a) => (
-          <SeatItem key={a.id}>
-            <div data-test="seat">{a.name}</div>
+          <SeatItem
+            key={a.id}
+            isAvailable={a.isAvailable}
+            isSelected={assentosSelecionados.includes(a.id)}
+          >
+            <div data-test="seat" onClick={() => selecionarAssento(a)}>
+              {a.name}
+            </div>
           </SeatItem>
         ))}
       </SeatsContainer>
       <CaptionContainer>
         <CaptionItem>
-          <CaptionCircle />
+          <CaptionCircle isSelected />
           Selecionado
         </CaptionItem>
         <CaptionItem>
-          <CaptionCircle />
+          <CaptionCircle isAvailable />
           Disponível
         </CaptionItem>
         <CaptionItem>
@@ -46,13 +73,27 @@ export default function SeatsPage() {
         </CaptionItem>
       </CaptionContainer>
       <FormContainer>
-        Nome do Comprador:
-        <input data-test="client-name" placeholder="Digite seu nome..." />
-        CPF do Comprador:
-        <input data-test="client-cpf" placeholder="Digite seu CPF..." />
-        <Link to="/sessoes/sucesso">
-          <button data-test="book-seat-btn">Reservar Assento(s)</button>
-        </Link>
+        <form onSubmit={reservarAssentos}>
+          <label for="name">Nome do Comprador:</label>
+          <input
+            data-test="client-name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Digite seu nome..."
+            required
+          />
+          <label for="cpf">CPF do Comprador:</label>
+          <input
+            data-test="client-cpf"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
+            placeholder="Digite seu CPF..."
+            required
+          />
+          <button data-test="book-seat-btn" type="submit">
+            Reservar Assento(s)
+          </button>
+        </form>
       </FormContainer>
       <FooterContainer>
         <div data-test="footer">
@@ -115,8 +156,15 @@ const CaptionContainer = styled.div`
   margin: 20px;
 `;
 const CaptionCircle = styled.div`
-  border: 1px solid blue; // Essa cor deve mudar
-  background-color: lightblue; // Essa cor deve mudar
+  border: 1px solid
+    ${(props) =>
+      props.isAvailable
+        ? props.isSelected
+          ? "#1AAE9E"
+          : "#808F9D"
+        : "#F7C52B"};
+  background-color: ${(props) =>
+    props.isAvailable ? (props.isSelected ? "#1AAE9E" : "#808F9D") : "#F7C52B"};
   height: 25px;
   width: 25px;
   border-radius: 25px;
@@ -132,8 +180,15 @@ const CaptionItem = styled.div`
   font-size: 12px;
 `;
 const SeatItem = styled.div`
-  border: 1px solid blue; // Essa cor deve mudar
-  background-color: lightblue; // Essa cor deve mudar
+  border: 1px solid
+    ${(props) =>
+      props.isAvailable
+        ? props.isSelected
+          ? "#1AAE9E"
+          : "#808F9D"
+        : "#F7C52B"};
+  background-color: ${(props) =>
+    props.isAvailable ? (props.isSelected ? "#1AAE9E" : "#808F9D") : "#F7C52B"};
   height: 25px;
   width: 25px;
   border-radius: 25px;
