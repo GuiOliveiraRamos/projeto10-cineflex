@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import React from "react";
 
 export default function SessionsPage() {
   const [sessoes, setSessoes] = useState([]);
@@ -43,15 +44,10 @@ export default function SessionsPage() {
       ))}
       <FooterContainer>
         <div>
-          <img
-            src={
-              "https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"
-            }
-            alt="poster"
-          />
+          <img src={sessoes.posterURL} alt={sessoes.title} />
         </div>
         <div>
-          <p>Tudo em todo lugar ao mesmo tempo</p>
+          <p>{sessoes.title}</p>
         </div>
       </FooterContainer>
     </PageContainer>

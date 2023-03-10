@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import React from "react";
 
 export default function SeatsPage() {
   const { idAssentos } = useParams();
@@ -9,6 +10,7 @@ export default function SeatsPage() {
   const [assentosSelecionados, setAssentosSelecionados] = useState([]);
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
+  const navigate = useNavigate();
 
   const selecionarAssento = (assento) => {
     if (assento.isAvailable) {
@@ -32,15 +34,15 @@ export default function SeatsPage() {
     return <p>Carregando...</p>;
   }
 
-  function reservarAssentos(e) {
+  const reservarAssentos = (e) => {
     e.preventDefault();
     const ids = assentosSelecionados;
     const request = axios.post(
       "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many",
       { ids, name, cpf }
     );
-    request.then(() => Navigate("/sucesso"));
-  }
+    request.then(() => navigate("/sucesso"));
+  };
 
   return (
     <PageContainer>
@@ -97,16 +99,11 @@ export default function SeatsPage() {
       </FormContainer>
       <FooterContainer>
         <div data-test="footer">
-          <img
-            src={
-              "https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"
-            }
-            alt="poster"
-          />
+          <img src={assentos.movie.posterURL} alt={assentos.movie.title} />
         </div>
         <div>
-          <p>Tudo em todo lugar ao mesmo tempo</p>
-          <p>Sexta - 14h00</p>
+          <p>{assentos.movie.title}</p>
+          <p>{`${assentos.day.weekday} - ${assentos.name}`}</p>
         </div>
       </FooterContainer>
     </PageContainer>
