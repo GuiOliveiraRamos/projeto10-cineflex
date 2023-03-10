@@ -85,6 +85,7 @@ export default function SeatsPage() {
         <form onSubmit={reservarAssentos}>
           <label htmlFor="name">Nome do Comprador:</label>
           <input
+            type="text"
             data-test="client-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -93,6 +94,8 @@ export default function SeatsPage() {
           />
           <label htmlFor="cpf">CPF do Comprador:</label>
           <input
+            type="number"
+            maxLength={12}
             data-test="client-cpf"
             value={cpf}
             onChange={(e) => setCpf(e.target.value)}
@@ -162,13 +165,9 @@ const CaptionContainer = styled.div`
 const CaptionCircle = styled.div`
   border: 1px solid
     ${(props) =>
-      props.isAvailable
-        ? props.isSelected
-          ? "#1AAE9E"
-          : "#808F9D"
-        : "#F7C52B"};
+      props.isSelected ? "#0E7D71" : props.isAvailable ? "#7B8B99" : "#F7C52B"};
   background-color: ${(props) =>
-    props.isAvailable ? (props.isSelected ? "#1AAE9E" : "#808F9D") : "#F7C52B"};
+    props.isSelected ? "#1AAE9E" : props.isAvailable ? "#C3CFD9" : "#FBE192"};
   height: 25px;
   width: 25px;
   border-radius: 25px;
@@ -188,11 +187,11 @@ const SeatItem = styled.div`
     ${(props) =>
       props.isAvailable
         ? props.isSelected
-          ? "#1AAE9E"
+          ? "#0E7D71"
           : "#808F9D"
         : "#F7C52B"};
   background-color: ${(props) =>
-    props.isAvailable ? (props.isSelected ? "#1AAE9E" : "#808F9D") : "#F7C52B"};
+    props.isAvailable ? (props.isSelected ? "#1AAE9E" : "#C3CFD9") : "#FBE192"};
   height: 25px;
   width: 25px;
   border-radius: 25px;
