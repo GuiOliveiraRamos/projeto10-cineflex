@@ -57,27 +57,26 @@ export default function SeatsPage() {
       <SeatsContainer>
         {assentos.seats.map((a) => (
           <SeatItem
+            data-test="seat"
             key={a.id}
             isAvailable={a.isAvailable}
             isSelected={assentosSelecionados.includes(a.id)}
           >
-            <div data-test="seat" onClick={() => selecionarAssento(a)}>
-              {a.name}
-            </div>
+            <div onClick={() => selecionarAssento(a)}>{a.name}</div>
           </SeatItem>
         ))}
       </SeatsContainer>
       <CaptionContainer>
         <CaptionItem>
-          <CaptionCircle isSelected data-test="seat" />
+          <CaptionCircle isSelected />
           Selecionado
         </CaptionItem>
         <CaptionItem>
-          <CaptionCircle isAvailable data-test="seat" />
+          <CaptionCircle isAvailable />
           Disponível
         </CaptionItem>
         <CaptionItem>
-          <CaptionCircle data-test="seat" />
+          <CaptionCircle />
           Indisponível
         </CaptionItem>
       </CaptionContainer>
@@ -85,8 +84,8 @@ export default function SeatsPage() {
         <form onSubmit={reservarAssentos}>
           <label htmlFor="name">Nome do Comprador:</label>
           <input
-            type="text"
             data-test="client-name"
+            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Digite seu nome..."
@@ -94,9 +93,9 @@ export default function SeatsPage() {
           />
           <label htmlFor="cpf">CPF do Comprador:</label>
           <input
+            data-test="client-cpf"
             type="number"
             maxLength={12}
-            data-test="client-cpf"
             value={cpf}
             onChange={(e) => setCpf(e.target.value)}
             placeholder="Digite seu CPF..."
