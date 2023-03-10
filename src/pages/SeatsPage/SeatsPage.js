@@ -69,15 +69,15 @@ export default function SeatsPage() {
       </SeatsContainer>
       <CaptionContainer>
         <CaptionItem>
-          <CaptionCircle isSelected />
+          <CaptionCircle isSelected data-test="seat" />
           Selecionado
         </CaptionItem>
         <CaptionItem>
-          <CaptionCircle isAvailable />
+          <CaptionCircle isAvailable data-test="seat" />
           Disponível
         </CaptionItem>
         <CaptionItem>
-          <CaptionCircle />
+          <CaptionCircle data-test="seat" />
           Indisponível
         </CaptionItem>
       </CaptionContainer>
@@ -107,8 +107,8 @@ export default function SeatsPage() {
           </button>
         </form>
       </FormContainer>
-      <FooterContainer>
-        <div data-test="footer">
+      <FooterContainer data-test="footer">
+        <div>
           <img src={assentos.movie.posterURL} alt={assentos.movie.title} />
         </div>
         <div>
