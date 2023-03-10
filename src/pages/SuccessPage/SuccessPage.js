@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
 export default function SuccessPage() {
+  const location = useLocation();
+  const dados = location.state.dados;
+
   return (
     <PageContainer>
       <h1>
@@ -12,28 +16,29 @@ export default function SuccessPage() {
         <strong>
           <p>Filme e sessão</p>
         </strong>
-        <p>Tudo em todo lugar ao mesmo tempo</p>
-        <p>03/03/2023 - 14:00</p>
+        <p>{dados.movieTitle}</p>
+        <p>{dados.sessionDate}</p>
       </TextContainer>
 
       <TextContainer>
         <strong>
           <p>Ingressos</p>
         </strong>
-        <p>Assento 01</p>
-        <p>Assento 02</p>
-        <p>Assento 03</p>
+        {dados.selectedSeats.map((seat) => (
+          <p key={seat}>Assento {seat}</p>
+        ))}
       </TextContainer>
 
       <TextContainer>
         <strong>
           <p>Comprador</p>
         </strong>
-        <p>Nome: Letícia Chijo</p>
-        <p>CPF: 123.456.789-10</p>
+        <p>Nome: {dados.clientName}</p>
+        <p>CPF: {dados.clientCPF}</p>
       </TextContainer>
-
-      <button>Voltar para Home</button>
+      <Link to="/">
+        <button>Voltar para Home</button>
+      </Link>
     </PageContainer>
   );
 }

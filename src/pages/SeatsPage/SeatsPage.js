@@ -36,12 +36,19 @@ export default function SeatsPage() {
 
   const reservarAssentos = (e) => {
     e.preventDefault();
+    const salvarDados = {
+      movieTitle: assentos.movie.title,
+      sessionDate: `${assentos.day.weekday} - ${assentos.name}`,
+      selectedSeats: assentosSelecionados,
+      clientName: name,
+      clientCPF: cpf,
+    };
     const ids = assentosSelecionados;
     const request = axios.post(
       "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many",
       { ids, name, cpf }
     );
-    request.then(() => navigate("/sucesso"));
+    request.then(() => navigate("/sucesso", { state: { dados: salvarDados } }));
   };
 
   return (
@@ -76,7 +83,7 @@ export default function SeatsPage() {
       </CaptionContainer>
       <FormContainer>
         <form onSubmit={reservarAssentos}>
-          <label for="name">Nome do Comprador:</label>
+          <label htmlFor="name">Nome do Comprador:</label>
           <input
             data-test="client-name"
             value={name}
@@ -84,7 +91,7 @@ export default function SeatsPage() {
             placeholder="Digite seu nome..."
             required
           />
-          <label for="cpf">CPF do Comprador:</label>
+          <label htmlFor="cpf">CPF do Comprador:</label>
           <input
             data-test="client-cpf"
             value={cpf}

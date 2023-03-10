@@ -44,7 +44,7 @@ export default function SessionsPage() {
       ))}
       <FooterContainer>
         <div>
-          <img src={sessoes.posterURL} alt={sessoes.title} />
+          <img key="img" src={sessoes.posterURL} alt={sessoes.title} />
         </div>
         <div>
           <p>{sessoes.title}</p>
