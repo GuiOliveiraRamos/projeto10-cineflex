@@ -16,8 +16,8 @@ export default function SuccessPage() {
         <strong>
           <p>Filme e sessão</p>
         </strong>
-        <p>{dados.movieTitle}</p>
-        <p>{dados.sessionDate}</p>
+        <p data-test="movie-info">{dados.movieTitle}</p>
+        <p data-test="movie-info">{dados.sessionDate}</p>
       </TextContainer>
 
       <TextContainer data-test="seats-info">
